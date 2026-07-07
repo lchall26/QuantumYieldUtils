@@ -1,5 +1,7 @@
-import LM from "ml-levenberg-marquardt"
+// import LM from "ml-levenberg-marquardt"
 // Need to add npm install ml-levenberg-marquardt
+import { levenbergMarquardt} from "https://cdn.jsdelivr.net/npm/ml-levenberg-marquardt/+esm";
+
 
 const PLANCK = 6.626e-34;
 const LIGHT_SPEED = 299792458;
@@ -114,19 +116,21 @@ function trapz(x, y) {
 //   return fitted;
 // }
 
-// function interpolate(x, y, x0) {
-//   if (x0 <= x[0]) return y[0];
-//   if (x0 >= x[x.length - 1]) return y[y.length - 1];
 
-//   for (let i = 1; i < x.length; i++) {
-//     if (x[i] >= x0) {
-//       const t = (x0 - x[i - 1]) / (x[i] - x[i - 1]);
-//       return y[i - 1] + t * (y[i] - y[i - 1]);
-//     }
-//   }
+// UNCOMMENTING, NEED IT DEFINED
+function interpolate(x, y, x0) {
+  if (x0 <= x[0]) return y[0];
+  if (x0 >= x[x.length - 1]) return y[y.length - 1];
 
-//   return y[y.length - 1];
-// }
+  for (let i = 1; i < x.length; i++) {
+    if (x[i] >= x0) {
+      const t = (x0 - x[i - 1]) / (x[i] - x[i - 1]);
+      return y[i - 1] + t * (y[i] - y[i - 1]);
+    }
+  }
+
+  return y[y.length - 1];
+}
 
 function buildGaussianFit(xVals, yVals, nGaussians = 2) {
   try {
@@ -185,8 +189,9 @@ function buildGaussianFit(xVals, yVals, nGaussians = 2) {
           const b = params[3 * i + 1];
           const c = params[3 * i + 2];
 
+          const z = (x-b)/c;
           result +=
-            a * Math.exp(-((x - b) / c) ** 2);
+            a * Math.exp(-(z ** 2));
         }
 
         return result;
@@ -208,7 +213,7 @@ function buildGaussianFit(xVals, yVals, nGaussians = 2) {
     };
 
 
-    const fit = LM(
+    const fit = levenbergMarquardt(
       data,
       multiGaussian,
       options
@@ -256,14 +261,14 @@ function calculateQuantumYield(absData, ledData, inputs) {
   const conversionFactor = ledIntegral / inputs.intensity;
   const ledAreaNorm = baseLED.map((v) => v / conversionFactor);
 
-  const gaussLEDOnLEDGrid = buildGaussianFit(ledWavelengths, ledAreaNorm);
+  const gaussLEDOnLEDGrid = buildGaussianFit(ledWavelengths, ledAreaNorm, inputs.nGaussians);
 
   const newAbsOnLEDGrid = ledWavelengths.map((w) =>
     interpolate(wavelengths, newAbs, w)
   );
 
   const NRG = ledWavelengths.map((w) => PLANCK * LIGHT_SPEED / (w * 1e-9));
-  const NP = ledAreaNorm.map((g, i) => (g / 1000) / NRG[i]);
+  const NP = gaussLEDOnLEDGrid.map((g, i) => (g / 1000) / NRG[i]);
 
   const FPT = newAbsOnLEDGrid.map((a) => 10 ** (-a));
   const FPA = FPT.map((v) => 1 - v);

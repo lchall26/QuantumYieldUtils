@@ -3,6 +3,7 @@ V1 - User Friendly Version - A Streamlit web app for calculating absorbed photon
 https://quantum-yield-utils.streamlit.app/
 
 V2 - Single Submission - A html web link for calculating absorbed photons and quantum yield from absorbance and LED emission data (javascript version).
+https://lchall26.github.io/QuantumYieldUtils/
 
 
 ## Features

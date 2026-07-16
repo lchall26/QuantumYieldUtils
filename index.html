@@ -15,6 +15,14 @@
   <script type="text/javascript" src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
+  <!-- Adding Header-->
+  <header class="banner">
+    <picture>
+      <source srcset="ZAPLAB_header.webp" type="image/webp">
+      <img src="ZAPLAB_header.webp" alt="ZAP Lab">
+    </picture>
+  </header>
+  
   <header class="hero">
     <h1>Quantum Yield Calculator</h1>
     <p>Browser-based absorbance, LED, and photon analysis tool</p>
@@ -95,14 +103,21 @@
     </section>
 
     <section class="card">
-  <h2>Plots</h2>
-  <div id="plotExtinction" class="plot"></div>
-  <div id="plotLEDGaussian" class="plot"></div>
-  <div id="plotOverlap" class="plot"></div>
-  <div id="plotPhotonsEmitted" class="plot"></div>
-  <div id="plotFractionAbsorbed" class="plot"></div>
-  <div id="plotPhotonsAbsorbed" class="plot"></div>
-</section>
+      <h2>Plots</h2>
+      <div id="plotExtinction" class="plot"></div>
+      <div id="plotLEDGaussian" class="plot"></div>
+      <div id="plotOverlap" class="plot"></div>
+      <div id="plotPhotonsEmitted" class="plot"></div>
+      <div id="plotFractionAbsorbed" class="plot"></div>
+      <div id="plotPhotonsAbsorbed" class="plot"></div>
+    </section>
+
+    <!--Acknowledgements-->
+    <section class= "acknowledgements">
+      <p>
+        Developed by Elizabeth Recker, Lydia Hall, and Veda in the ZAP Lab at the University of Texas at Austin
+      </p>
+    </section>
   </main>
 
   <script type="module" src="script.js?v=10"></script>

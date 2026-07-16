@@ -26,10 +26,11 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  background-color: #C75D28;
 }
 .banner img {
   width: 100%;
-    max-width: 1200px;   /* Prevents image from becoming enormous */
+    max-width: 600px;   /* Prevents image from becoming enormous */
     height: auto;
     max-height: 400px;
     object-fit: cover;

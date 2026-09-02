@@ -433,7 +433,7 @@ function renderResults(result) {
     ],
     "3",
     "Wavelength (nm)",
-    "Normalized Intensity"
+    "Normalized"
   );
 
   plotLine(

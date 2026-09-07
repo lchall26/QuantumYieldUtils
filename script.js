@@ -244,6 +244,8 @@ function calculateQuantumYield(absData, ledData, inputs) {
   const wavelengths = absData.map((r) => r[0]);
   const absorbance = absData.map((r) => r[1]);
 
+  const transmittance = absorbance.map((A) => 10**(-A));
+
   const ledWavelengths = ledData.map((r) => r[0]);
   const rawLED = ledData.map((r) => r[1]);
 
@@ -287,6 +289,8 @@ function calculateQuantumYield(absData, ledData, inputs) {
 
   return {
     wavelengths,
+    absorbance,
+    transmittance,
     ledWavelengths,
     extinction,
     newAbs,
@@ -403,11 +407,35 @@ function renderResults(result) {
   const normAbs = result.newAbsOnLEDGrid.map((v) => (maxAbs > 0 ? v / maxAbs : 0));
   const normLED = result.ledAreaNorm.map((v) => (maxLED > 0 ? v / maxLED : 0));
 
+  // New Plot 1: Absorbance Data Raw. Just plot the file the user uploads
+  plotLine(
+    "plotAbsorbanceRaw",
+    result.wavelengths,
+    result.absorbance,
+    "1",
+    "Wavelength (nm)",
+    "Absorbance",
+    "Data",
+    { scientificY: false, showLegend: false }
+  );
+
+  // New Plot 2: Transmittance Data. Using T = 10^-A.
+  plotLine(
+    "plotTransmittance",
+    result.wavelengths,
+    result.transmittance,
+    "2",
+    "Wavelength (nm)",
+    "Transmittance",
+    "Data",
+    { scientificY: false, showLegend: false }
+  );
+  
   plotLine(
     "plotExtinction",
     result.wavelengths,
     result.extinction,
-    "1",
+    "3",
     "Wavelength (nm)",
     "Calculated Extinction (M-1 cm-1)",
     "Data",
@@ -420,7 +448,7 @@ function renderResults(result) {
       { x: result.ledWavelengths, y: result.ledAreaNorm, name: "Raw LED" },
       { x: result.ledWavelengths, y: result.gaussLEDOnLEDGrid, name: "Gaussian Fit" }
     ],
-    "2",
+    "4",
     "Wavelength (nm)",
     "mW cm-2 nm-1"
   );
@@ -431,7 +459,7 @@ function renderResults(result) {
       { x: result.ledWavelengths, y: normAbs, name: "Sample" },
       { x: result.ledWavelengths, y: normLED, name: "LED" }
     ],
-    "3",
+    "5",
     "Wavelength (nm)",
     "Normalized"
   );
@@ -440,7 +468,7 @@ function renderResults(result) {
     "plotPhotonsEmitted",
     result.ledWavelengths,
     result.NP,
-    "4",
+    "6",
     "Wavelength (nm)",
     "photons",
     "Data",
@@ -451,7 +479,7 @@ function renderResults(result) {
     "plotFractionAbsorbed",
     result.ledWavelengths,
     result.FPA,
-    "5",
+    "7",
     "Wavelength (nm)",
     "Fraction Absorbed",
     "Data",
@@ -464,7 +492,7 @@ function renderResults(result) {
       { x: result.ledWavelengths, y: result.NP, name: "Photons Emitted" },
       { x: result.ledWavelengths, y: result.AP, name: "Photons Absorbed" }
     ],
-    "6",
+    "8",
     "Wavelength (nm)",
     "photons",
     { scientificY: true }

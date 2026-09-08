@@ -414,7 +414,7 @@ function renderResults(result) {
     result.absorbance,
     "1",
     "Wavelength (nm)",
-    "Absorbance",
+    "Optical Density",
     "Data",
     { scientificY: false, showLegend: false }
   );
@@ -475,16 +475,17 @@ function renderResults(result) {
     { scientificY: true, showLegend: false }
   );
 
-  plotLine(
-    "plotFractionAbsorbed",
-    result.ledWavelengths,
-    result.FPA,
-    "7",
-    "Wavelength (nm)",
-    "Fraction Absorbed",
-    "Data",
-    { showLegend: false }
-  );
+  // Removing plot 7
+  // plotLine(
+  //   "plotFractionAbsorbed",
+  //   result.ledWavelengths,
+  //   result.FPA,
+  //   "7",
+  //   "Wavelength (nm)",
+  //   "Fraction Absorbed",
+  //   "Data",
+  //   { showLegend: false }
+  // );
 
   plotTwoLines(
     "plotPhotonsAbsorbed",
@@ -492,7 +493,7 @@ function renderResults(result) {
       { x: result.ledWavelengths, y: result.NP, name: "Photons Emitted" },
       { x: result.ledWavelengths, y: result.AP, name: "Photons Absorbed" }
     ],
-    "8",
+    "7",
     "Wavelength (nm)",
     "photons",
     { scientificY: true }
